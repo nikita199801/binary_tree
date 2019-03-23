@@ -1,17 +1,20 @@
 class Node():
-    def __init__(self, data):
+    def __init__(self, data, flag):
         self.left= self.right = None
         self.data = data
+        self.flag = flag
 
 
 class BinTree():
     def __init__(self):
         self.root = None
+        self.word=""
+        self.root_flag=0
 
 
     def insert(self, data):
         if self.root is None:
-            self.root = Node(data)
+            self.root = Node(data, 0)
         else:
             self._insert(data,self.root)
 
@@ -20,49 +23,55 @@ class BinTree():
             if node.left is not None:
                 self._insert(data, node.left)
             else:
-                node.left = Node(data)
+                node.left = Node(data, 0)
         else:
             if node.right is not None:
                 self._insert(data, node.right)
             else:
-                node.right = Node(data)
-
-    def printTree(self):
-        if self.root is not None:
-            self._printTree(self.root)
+                node.right = Node(data, 0)
 
 
-    def _printTree(self, node):
+    def printTree(self, node):
         if node is not None:
-            self._printTree(node.left)
-            print(str(node.data))
-            self._printTree(node.right)
+            print(str(node.data) + " ")
+            self.printTree(node.left)
+            self.printTree(node.right)
 
     def printWrds(self,node):
-        if self.root is not None:
-            curr = self.root
-            print(self.root.data)
-        while True:
-            if curr.left is not None:
-                curr=curr.left
-                print(curr.left.data)
-                self.printWrds(curr)
+        if node.flag == 0 :
+           if node == self.root and ((node.left is not None and node.left.flag == 0)
+                                     or (node.right is not None and node.right.flag == 0)):
+               if node.left is not None and node.left.flag==0:
+                   self.printWrds(node.left)
+               elif node.right is not None and node.right.flag==0:
+                   self.printWrds(node.right)
+           else:
+               if (node.left is not None and node.left.flag == 0) \
+                       or (node.right is not None and node.right.flag == 0):
+                   if node.left is not None and node.left.flag == 0:
+                       self.word = self.word + node.data
+                       self.printWrds(node.left)
+                   elif node.right is not None and node.right.flag == 0:
+                        self.word = self.word + node.data
+                        self.printWrds(node.right)
+
+               elif ((node.left is not None and node.left.flag == 1)
+                     or (node.right is not None and node.right.flag == 1)):
+                   self.word = ""
+                   node.flag=1
+                   self.printWrds(self.root)
+               else:
+                   node.flag=1
+                   self.word =self.word + node.data
+                   self._wordout()
+                   self.printWrds(self.root)
 
 
 
+    def getRoot(self):
+        return self.root
 
 
-    # def _printWrds(self,node):
-    #     if node.left is not None:
-    #         if node.left is None:
-    #             print(""+ str(node.right.data))
-    #             self._printWrds(node.right)
-    #         print(""+ str(node.left.data))
-    #         self._printWrds(node.left)
-
-        # elif node.right is not None:
-        #     print(node.right.data)
-        #     self._printWrds(node.right)
-
-
-
+    def _wordout(self):
+        print(self.root.data+self.word)
+        self.word = ""
