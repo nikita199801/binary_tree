@@ -74,4 +74,4 @@ class BinTree():
 
     def _wordout(self):
         print(self.root.data+self.word)
-        self.word = ""
+        self.word = "" 
