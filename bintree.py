@@ -1,24 +1,22 @@
-class Node():
-    def __init__(self, data, flag):
+class Node():                                   #Создаем новый тип данны, который хранит
+    def __init__(self, data, flag):             #указатели на правый и левый узел и данные
         self.left= self.right = None
         self.data = data
         self.flag = flag
 
 
-class BinTree():
+class BinTree():                               #создаем класс BinTree и объявляем конструктор
     def __init__(self):
         self.root = None
         self.word=""
-        self.root_flag=0
 
-
-    def insert(self, data):
+    def insert(self, data):                         #создаем метод вставки в дерево путем рекурсии
         if self.root is None:
             self.root = Node(data, 0)
         else:
             self._insert(data,self.root)
 
-    def _insert(self, data, node):
+    def _insert(self, data, node):                 #создаем приватный метод, который обрабатывает все данные внутри класса
         if data < node.data:
             if node.left is not None:
                 self._insert(data, node.left)
@@ -31,18 +29,18 @@ class BinTree():
                 node.right = Node(data, 0)
 
 
-    def printTree(self, node):
-        if node is not None:
+    def printTree(self, node):                   #Метод для вывода дерева путем сортировки его обходом в прямом порядке
+        if node is not None:                     #с помощью рекурсии
             print(str(node.data) + " ")
             self.printTree(node.left)
             self.printTree(node.right)
 
-    def printWrds(self,node):
+    def printWrds(self,node):                    #Метод вывода всех слов составленных от корня к листу.
         if node.flag == 0 :
-           if node == self.root and ((node.left is not None and node.left.flag == 0)
+           if node == self.root and ((node.left is not None and node.left.flag == 0)        #проверяется наличие элемента слева и справа
                                      or (node.right is not None and node.right.flag == 0)):
                if node.left is not None and node.left.flag==0:
-                   self.printWrds(node.left)
+                   self.printWrds(node.left)                               #рекурсивно вызывается printWrds()
                elif node.right is not None and node.right.flag==0:
                    self.printWrds(node.right)
            else:
@@ -55,7 +53,7 @@ class BinTree():
                         self.word = self.word + node.data
                         self.printWrds(node.right)
 
-               elif ((node.left is not None and node.left.flag == 1)
+               elif ((node.left is not None and node.left.flag == 1)          #если достигается лист, то записываем его,
                      or (node.right is not None and node.right.flag == 1)):
                    self.word = ""
                    node.flag=1
@@ -74,4 +72,4 @@ class BinTree():
 
     def _wordout(self):
         print(self.root.data+self.word)
-        self.word = "" 
+        self.word = ""
