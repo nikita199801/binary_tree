@@ -31,7 +31,7 @@ class BinTree():                               #создаем класс BinTre
 
     def printTree(self, node):                   #Метод для вывода дерева путем сортировки его обходом в прямом порядке
         if node is not None:                     #с помощью рекурсии
-            print(str(node.data) + " ")
+            print(str(node.data) + " "+ str(node.flag))
             self.printTree(node.left)
             self.printTree(node.right)
 
@@ -54,7 +54,7 @@ class BinTree():                               #создаем класс BinTre
                         self.printWrds(node.right)
 
                elif ((node.left is not None and node.left.flag == 1)          #если достигается лист, то записываем его,
-                     or (node.right is not None and node.right.flag == 1)):
+                     or (node.right is not None and node.right.flag == 1)):   #помечаем, что этот лист пройден
                    self.word = ""
                    node.flag=1
                    self.printWrds(self.root)
@@ -66,10 +66,16 @@ class BinTree():                               #создаем класс BinTre
 
 
 
-    def getRoot(self):
+    def getRoot(self):                                                      #метод для получения корня
         return self.root
 
 
-    def _wordout(self):
+    def _wordout(self):                                                    #приватный метод вывода слов из узлов
         print(self.root.data+self.word)
         self.word = ""
+
+    def nullFlag(self, node):                                              #метод для обнуления флагов после обходаы
+        if node is not None:
+            node.flag=0
+            self.nullFlag(node.left)
+            self.nullFlag(node.right)
